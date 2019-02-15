@@ -1,0 +1,37 @@
+/* 
+    Created on : 03-sep-2016, 17:31:08
+    Author     : MiguelAngel
+    Modified By: Albert Canela - 08-02-2019
+*/
+.divEina{
+    border-color: black;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+    border-bottom-style: solid;
+    border-right-style: solid;
+    border-bottom-right-radius: 15px;
+    -moz-border-right-radius: 15px;
+    margin-top: 50px;
+    box-sizing: border-box;
+}
+.ownImgTable{
+    object-fit: contain;
+    width: 220px;
+    height: 220px;
+
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+.textcenter{
+    text-align: center;
+}
+.icon{
+
+    width: 20px;
+}
+.numero {
+    height: 20px;
+}
