@@ -1,3 +1,4 @@
+<%@page import="java.util.Iterator"%>
 <%@page import="java.util.Set"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -22,17 +23,17 @@
      Afegir tots les eines en el cas que la variable 'eines' estigui 
      buida.
      */
-        if(eines.isEmpty()){
-            eines.put("Alicate", 15);
-            eines.put("Destral", 167);
-            eines.put("JocTornavis", 165);
-            eines.put("MaletiBroques", 175);
-            eines.put("MartellGoma", 105);
-            eines.put("Multius", 150);
-            eines.put("SerraJardi", 815);
-            eines.put("SerraMetall", 915);
-            eines.put("cistella", 1506);
-        }
+    if (eines.isEmpty()) {
+        eines.put("Alicate", 15);
+        eines.put("Destral", 167);
+        eines.put("JocTornavis", 165);
+        eines.put("MaletiBroques", 175);
+        eines.put("MartellGoma", 105);
+        eines.put("Multius", 150);
+        eines.put("SerraJardi", 815);
+        eines.put("SerraMetall", 915);
+
+    }
 
     /*
      TODO
@@ -51,10 +52,10 @@
      donada. En el cas que no siguin nuls, afegiu-lo al Map 'comprar'.
         
      */
-    String eina=request.getParameter("eina");
-    String quantitat=request.getParameter("quantitat");
-    
-    if(eina!=null&&quantitat!=null){
+    String eina = request.getParameter("eina");
+    String quantitat = request.getParameter("quantitat");
+
+    if (eina != null && quantitat != null) {
         comprar.put(eina, Integer.parseInt(quantitat));
     }
 
@@ -107,12 +108,8 @@
                         
                         IMPORTANT:
                         Una vegada ho has realitzat, NO tanquis el bucle. L'HTML
-                        que hi ha a continuació es part del cos del bucle.
-                             */
-                        
-                              
-                          
-
+                        que hi ha a continuació es part del cos del bucle.*/
+                            for (String nom_eina : eines.keySet()) {
                         %>
 
                         <div class="col-md-3 divEina">
@@ -122,7 +119,11 @@
                                     TODO
                                     Mostreu en negreta el nom de l'eina actual i el seu preu                               
                                     -->
-                                  
+                                    <%
+                                        out.println("<strong>" + nom_eina + " - " + eines.get(nom_eina) + "€</strong>");
+
+
+                                    %>
                                 </h4>
                                 <div class="row">
                                     <!--
@@ -130,7 +131,10 @@
                                    Inseriu un element img class="img-responsive ownImgTable col-centered" amb
                                    src de la carpeta img l'eina xxx.png (on xxx ha de ser variable)
                                     -->
-                                 
+                                    <%  
+                                        String imatge = "img/" + nom_eina + ".png";
+                                    %>
+                                    <img src="<%=imatge%>" img class="img-responsive ownImgTable col-centered" />
                                 </div>
 
                             </div>
@@ -173,13 +177,12 @@
                                                                             Feu un bucle for del 1 al 5 per construir amb JSTL 
                                                                             les url amb els enllaços anteriors.
                                 -->                                                  
-                              
+
                             </div>
                         </div> 
 
-                        <%
-                                // AQUI HEU DE TANCAR EL BUCLE
-                          
+                        <%                            // AQUI HEU DE TANCAR EL BUCLE
+                            }
                         %>
                     </div>        
 
@@ -192,15 +195,12 @@
                     <div class="row">
                         <div class="col-md-6 textcenter">
 
-                            <%
-                                /*
+                            <%                                /*
                                  TODO
                                  Calculeu el valor de quantitat: Nombre d'eines diferents comprades
                                  Calculeu el valor total: Total de factura
                                  */
-                               
-
-                                /*
+ /*
                                 TODO
                                 Per calcular el total heu de recòrrer el map anomenat comprar.
                                 Ho podeu fer amb un bucle de tipus for on a cada volta mireu el nom de l'eina
@@ -212,7 +212,6 @@
                                 
                                 Cada vegada s'actualitzarà la variable total. 
                                  */
-                              
 
                             %>
                             <h4>
@@ -222,15 +221,14 @@
                                 Total:  
                             </h4>
                             <h4><a href='<c:url value="comprats.jsp"/>'>Veure</a></h4>
-                            <%
-                                /*
+                            <% /*
                                  TODO
                                  Necessitarem que les variables eines i comprar
                                  siguin accessibles desde JSTL. Ho necessitareu a comprats.jsp
                                  Què heu de fer?
                                  Feu que eines i comprar siguin accessibles desde JSTL
                                  */
-                              
+
                             %>
                         </div>
                     </div>
