@@ -90,7 +90,9 @@
                                 <td>${eina.key}</td>
                                  <td>${eina.value}</td>
                                  <c:set var="url" value="comprats.jsp?eina=${eina.key}" scope="page"></c:set>
-                                  <td><a href='<c:url value = "${url}"/>'>Eliminar</a></td>
+                                  <td>
+                                      <a href='<c:url value = "${url}"/>'>Eliminar</a>
+                                 </td>
                             </tr>
                            
                             <c:set var="ptotal" value="${ptotal+(eina.value)*eines.get(eina.key)}"  scope="page"></c:set>
