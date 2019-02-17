@@ -20,7 +20,10 @@
      Què heu de fer?
      Elimineu l'eina de la llista d'eines comprades
      */
-   
+     Map<String, Integer> comprar = (Map)session.getAttribute("comprar");
+    String eina=request.getParameter("eina");
+    comprar.remove(eina);
+    
 %>
 
 <!DOCTYPE html>
@@ -78,8 +81,23 @@
                         
                         Heu de definir i calcular la variable JSTL ptotal com el total de la factura (suma dels preus*quantitat.)
                         Aquesta variable la mostrareu al final de tot.
-                        -->
-
+                        --> 
+                        <c:forEach  var="eina"  items="${comprar}">
+                            <tr>
+                                <td>
+                                     <img class="ownImgTable" src='img/${eina.key}.png'/>
+                                </td>
+                                <td>${eina.key}</td>
+                                 <td>${eina.value}</td>
+                                 <c:set var="url" value="comprats.jsp?eina=${eina.key}" scope="page"></c:set>
+                                  <td><a href='<c:url value = "${url}"/>'>Eliminar</a></td>
+                            </tr>
+                           
+                            <c:set var="ptotal" value="${ptotal+(eina.value)*eines.get(eina.key)}"  scope="page"></c:set>
+                                   
+                               
+                            
+                        </c:forEach>
                       
                         <tfoot>
                             <tr>     
@@ -92,7 +110,7 @@
                                      Cal posar a xx el valor del total
                                      
                                     --> 
-                                    <fmt:formatNumber value="${xx}" type="number"/> €</th>
+                                    <fmt:formatNumber value="${ptotal}" type="number"/> €</th>
                                 <th></th>
                             </tr>
                         </tfoot>

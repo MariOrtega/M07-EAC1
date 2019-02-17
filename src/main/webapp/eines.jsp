@@ -11,6 +11,7 @@
 <%!
     Map<String, Integer> comprar = new HashMap();
     Map<String, Integer> eines = new HashMap();
+
 %>
 <%
     /*
@@ -25,14 +26,13 @@
      */
     if (eines.isEmpty()) {
         eines.put("Alicate", 15);
-        eines.put("Destral", 167);
         eines.put("JocTornavis", 165);
         eines.put("MaletiBroques", 175);
         eines.put("MartellGoma", 105);
         eines.put("Multius", 150);
         eines.put("SerraJardi", 815);
         eines.put("SerraMetall", 915);
-
+        eines.put("Destral", 167);
     }
 
     /*
@@ -52,11 +52,11 @@
      donada. En el cas que no siguin nuls, afegiu-lo al Map 'comprar'.
         
      */
-    String eina = request.getParameter("eina");
-    String quantitat = request.getParameter("quantitat");
+    String e = request.getParameter("eina");
+    String q = request.getParameter("quantitat");
 
-    if (eina != null && quantitat != null) {
-        comprar.put(eina, Integer.parseInt(quantitat));
+    if (e != null && q != null) {
+        comprar.put(e, Integer.parseInt(q));
     }
 
 %>
@@ -109,7 +109,8 @@
                         IMPORTANT:
                         Una vegada ho has realitzat, NO tanquis el bucle. L'HTML
                         que hi ha a continuació es part del cos del bucle.*/
-                            for (String nom_eina : eines.keySet()) {
+                            for (String nom : eines.keySet()) {
+
                         %>
 
                         <div class="col-md-3 divEina">
@@ -119,8 +120,7 @@
                                     TODO
                                     Mostreu en negreta el nom de l'eina actual i el seu preu                               
                                     -->
-                                    <%
-                                        out.println("<strong>" + nom_eina + " - " + eines.get(nom_eina) + "€</strong>");
+                                    <%  out.println("<strong>" + nom + " - " + eines.get(nom) + " €</strong>");
 
 
                                     %>
@@ -131,10 +131,9 @@
                                    Inseriu un element img class="img-responsive ownImgTable col-centered" amb
                                    src de la carpeta img l'eina xxx.png (on xxx ha de ser variable)
                                     -->
-                                    <%  
-                                        String imatge = "img/" + nom_eina + ".png";
+                                    <% String imatge = "img/" + nom + ".png";
                                     %>
-                                    <img src="<%=imatge%>" img class="img-responsive ownImgTable col-centered" />
+                                    <img class="img-responsive ownImgTable col-centered" src="<%=imatge%>" img  />
                                 </div>
 
                             </div>
@@ -157,28 +156,43 @@
                                                                 Heu de mirar si el Map 'comprar' conté el nom de l'eina,
                                                                     Si el conté, llavors heu de crear 5
                                 .                                        <div class="col-md-2"> 
-                                                                    buits
-                                                                    
-                                                                    Si no el conté, llavors
-                                                                        heu de mostrar els nombres del 1 al 5  on cadascun d'ells té
-                                                                        associat un enllaç amb el nom de l'eina i la
-                                                                        quantitat
-                                                                            <div class="col-md-2"> 
-                                                                                <a href='xxx'>1</a>
-                                                                                <a href='xxx'>2</a>
-                                                                                <a href='xxx'>3</a>
-                                                                                <a href='xxx'>4</a>
-                                                                                <a href='xxx'>5</a>
-                                                                            </div>                                      
-                                                                            on xxx l'heu de construir amb JSTL i la url ha de ser:
-                                                                            eines.jsp?eina=yyy&quantitat=zzz
-                                                                                on yyy és el nom de l'eina (emmagatzemat al pageContext)
-                                                                                i  zzz és la quantitat (pot ser: 1,2,3,4, o 5).
-                                                                            Feu un bucle for del 1 al 5 per construir amb JSTL 
-                                                                            les url amb els enllaços anteriors.
-                                -->                                                  
+                                                                    buits-->
 
-                            </div>
+                                <%
+                                    pageContext.setAttribute("nom", nom);
+                                    if (!comprar.containsKey(nom)) {
+                                %>
+
+                                <!--Si no el conté, llavors
+                                    heu de mostrar els nombres del 1 al 5  on cadascun d'ells té
+                                    associat un enllaç amb el nom de l'eina i la
+                                    quantitat
+                                        <div class="col-md-2"> 
+                                            <a href='xxx'>1</a>
+                                            <a href='xxx'>2</a>
+                                            <a href='xxx'>3</a>
+                                            <a href='xxx'>4</a>
+                                            <a href='xxx'>5</a>
+                                        </div>                                      
+                                        on xxx l'heu de construir amb JSTL i la url ha de ser:
+                                        eines.jsp?eina=yyy&quantitat=zzz
+                                            on yyy és el nom de l'eina (emmagatzemat al pageContext)
+                                            i  zzz és la quantitat (pot ser: 1,2,3,4, o 5).
+                                        Feu un bucle for del 1 al 5 per construir amb JSTL 
+                                        les url amb els enllaços anteriors.
+                                -->  
+                                <c:forEach begin="1" end="5" varStatus="posicio">
+                                    <div class="col-md-2">
+                                        <c:set var="url"  value="eines.jsp?eina=${nom}&quantitat=${posicio.index}" scope="page"/>
+                                        <a href='<c:url value = "${url}"/>'>
+                                            <c:out value="${posicio.index}"/>
+                                        </a>
+
+                                    </div>
+
+                                </c:forEach>
+                                <%}%>
+                            </div> 
                         </div> 
 
                         <%                            // AQUI HEU DE TANCAR EL BUCLE
@@ -186,7 +200,7 @@
                         %>
                     </div>        
 
-                </div>
+                </div> 
 
                 <div class="col-md-4 " >
                     <div class="row col-centered" >
@@ -200,7 +214,10 @@
                                  Calculeu el valor de quantitat: Nombre d'eines diferents comprades
                                  Calculeu el valor total: Total de factura
                                  */
- /*
+                               
+                                double total = 0.0;
+
+                                /*
                                 TODO
                                 Per calcular el total heu de recòrrer el map anomenat comprar.
                                 Ho podeu fer amb un bucle de tipus for on a cada volta mireu el nom de l'eina
@@ -212,13 +229,20 @@
                                 
                                 Cada vegada s'actualitzarà la variable total. 
                                  */
-
+                                int valor,quant=0;
+                                for (Map.Entry<String, Integer> v : comprar.entrySet()){
+                                    String eina=v.getKey();
+                                    valor=eines.get(eina);
+                                   quant=v.getValue();
+                                    total=total+valor*quant;
+                                }
+                               
                             %>
                             <h4>
-                                Quantitat:
+                                Quantitat:<%=comprar.size()%>
                             </h4>
                             <h4>
-                                Total:  
+                                Total: <%=total%>
                             </h4>
                             <h4><a href='<c:url value="comprats.jsp"/>'>Veure</a></h4>
                             <% /*
@@ -227,8 +251,9 @@
                                  siguin accessibles desde JSTL. Ho necessitareu a comprats.jsp
                                  Què heu de fer?
                                  Feu que eines i comprar siguin accessibles desde JSTL
-                                 */
-
+                                     */
+                                    session.setAttribute("comprar", comprar);
+                                session.setAttribute("eines", eines);
                             %>
                         </div>
                     </div>
